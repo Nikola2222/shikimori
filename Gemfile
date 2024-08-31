@@ -217,6 +217,9 @@ group :development, :test do
   gem 'parallel_tests'
 end
 
+# for Network::FirefoxGet
+gem 'selenium-webdriver'
+
 group :test do
   gem 'capybara', '3.36.0' # request specs failing with 3.39.2 version
   gem 'database_cleaner'
@@ -246,4 +249,4 @@ gem 'clockwork', require: false
 gem 'faye'
 gem 'thin'
 
-gem 'rexml', '~> 3.2' # added to fix ruby 3 on production
+gem 'rexml', '~> 3.3' # added to fix ruby 3 on production

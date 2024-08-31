@@ -10,7 +10,7 @@ class ProxyParser
 
   CACHE_VERSION = :v10
 
-  CUSTOM_SOURCES = %i[proxylist_geonode_com] # hidemyname
+  CUSTOM_SOURCES = %i[hidemyname proxyshare_com] # proxylist_geonode_com
 
   def import(
     is_db_sources: IS_DB_SOURCES,
@@ -78,12 +78,16 @@ private
   end
 
   def parse url, protocol
-    # задержка, чтобы не нас не банили
-    sleep 1
-    content = OpenURI
-      .open_uri(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE)
-      .read
+    sleep 1 # задержка, чтобы не банили
+
+    content =
+      if url.in? SELENIUM_URLS
+        Network::FirefoxGet.call url
+      else
+        OpenURI.open_uri(url, Proxy.prepaid_proxy_open_uri).read
+      end
       .gsub(%r{<br ?/?>}, "\n")
+
     content = Nokogiri::HTML(content).text if content.starts_with?('<!')
 
     proxies = parse_text content, protocol
@@ -208,8 +212,8 @@ private
   end
 
   def hidemyname
-    # purchased at 23-04-2023
-    url = 'https://hidemy.name/api/proxylist.php?out=js&lang=en&utf&code=431317483913153'
+    # purchased at 24-08-2024
+    url = 'https://hidemy.name/api/proxylist.php?out=js&lang=en&utf&code=777276949863880'
 
     data =
       Rails.cache.fetch([url, :proxies, CACHE_VERSION], expires_in: 6.hours) do
@@ -237,8 +241,27 @@ private
     end
   end
 
-  def proxylist_geonode_com
-    url = 'https://proxylist.geonode.com/api/proxy-list?limit=5000&page=1&sort_by=lastChecked&sort_type=desc&protocols=http%2Chttps%2Csocks4%2Csocks5'
+  # it is the same as proxyshare_com
+  # def proxylist_geonode_com
+  #   url = 'https://proxylist.geonode.com/api/proxy-list?limit=500&page=1&sort_by=lastChecked&sort_type=desc&protocols=http%2Chttps%2Csocks4%2Csocks5'
+  #   data =
+  #     Rails.cache.fetch([url, :proxies, CACHE_VERSION], expires_in: 6.hours) do
+  #       OpenURI.open_uri(url, Proxy.prepaid_proxy_open_uri).read
+  #     rescue *Network::FaradayGet::NET_ERRORS
+  #       '{"data":[]}'
+  #     end
+  #  
+  #   JSON.parse(data, symbolize_names: true)[:data].map do |entry|
+  #     build_proxy(
+  #       ip: entry[:ip],
+  #       port: entry[:port],
+  #       protocol: entry[:protocols][0]
+  #     )
+  #   end
+  # end
+
+  def proxyshare_com page = 1
+    url = "https://proxylist.geonode.com/api/proxy-list?limit=500&page=#{page}&sort_by=lastChecked&sort_type=desc&protocols=http%2Chttps%2Csocks4%2Csocks5"
     data =
       Rails.cache.fetch([url, :proxies, CACHE_VERSION], expires_in: 6.hours) do
         OpenURI.open_uri(url, Proxy.prepaid_proxy_open_uri).read
@@ -246,12 +269,22 @@ private
         '{"data":[]}'
       end
 
-    JSON.parse(data, symbolize_names: true)[:data].map do |entry|
+    data = JSON.parse(data, symbolize_names: true)
+
+    proxies = data[:data].map do |entry|
       build_proxy(
         ip: entry[:ip],
         port: entry[:port],
         protocol: entry[:protocols][0]
       )
+    end
+
+    sleep 1
+
+    if data[:page] * data[:limit] < data[:total]
+      proxies + proxyshare_com(page + 1)
+    else
+      proxies
     end
   end
 
@@ -263,10 +296,9 @@ private
   URL_SOURCES = {
     http: %w[
       https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt
+      https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/protocols/http/data.txt
       https://free-proxy-list.net/
       https://rootjazz.com/proxies/proxies.txt
-      http://www.megaproxylist.net/
-      http://sslproxies24.blogspot.com/feeds/posts/default
       http://my-proxy.com/free-proxy-list-10.html
       http://my-proxy.com/free-proxy-list-2.html
       http://my-proxy.com/free-proxy-list-3.html
@@ -277,43 +309,29 @@ private
       http://my-proxy.com/free-proxy-list-8.html
       http://my-proxy.com/free-proxy-list-9.html
       http://my-proxy.com/free-proxy-list.html
-      http://atomintersoft.com/anonymous_proxy_list
-      http://atomintersoft.com/high_anonymity_elite_proxy_list
-      http://atomintersoft.com/index.php?q=proxy_list_domain&domain=com
-      http://atomintersoft.com/products/alive-proxy/proxy-list
-      http://atomintersoft.com/products/alive-proxy/proxy-list/3128
-      http://atomintersoft.com/products/alive-proxy/proxy-list/high-anonymity
-      http://atomintersoft.com/products/alive-proxy/socks5-list
-      http://atomintersoft.com/proxy_list_domain
-      http://atomintersoft.com/proxy_list_domain_com
-      http://atomintersoft.com/proxy_list_domain_edu
-      http://atomintersoft.com/proxy_list_domain_net
-      http://atomintersoft.com/proxy_list_domain_org
-      http://atomintersoft.com/proxy_list_port
-      http://atomintersoft.com/proxy_list_port_3128
-      http://atomintersoft.com/proxy_list_port_80
-      http://atomintersoft.com/proxy_list_port_8000
-      http://atomintersoft.com/proxy_list_port_81
-      http://atomintersoft.com/transparent_proxy_list
-      https://proxylistdaily4you.blogspot.com/p/l1l2l3-proxy-server-list-1167.html
       https://www.newproxys.com/free-proxy-lists/
-      http://proxyserverlist-24.blogspot.com/feeds/posts/default
-      http://alexa.lr2b.com/proxylist.txt
       https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=elite&simplified=true&limit=300
       http://multiproxy.org/txt_all/proxy.txt
-      http://www.cybersyndrome.net/pla6.html
+      https://www.cybersyndrome.net/pla6.html
       https://cyber-gateway.net/get-proxy/free-proxy/24-free-http-proxy
       https://spys.me/proxy.txt
+      https://proxycompass.com/wp-admin/admin-ajax.php?action=proxylister_download&nonce=2b0ed349bc&format=txt&filter={%22protocols%22:%22HTTP,HTTPS%22,%22anonymity%22:%22Anonymous,Elite%22,%22latency%22:0,%22page_size%22:20,%22page%22:1}
+      https://www.proxyshare.com/detection/proxyList?limit=500&page=1&sort_by=lastChecked&sort_type=desc
+      https://openproxy.space/list/http
     ],
     https: %w[
     ],
     socks4: %w[
       https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/socks4.txt
+      https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/protocols/socks4/data.txt
       https://www.my-proxy.com/free-socks-4-proxy.html
+      https://proxycompass.com/wp-admin/admin-ajax.php?action=proxylister_download&nonce=2b0ed349bc&format=txt&filter={%22anonymity%22:%22Anonymous,Elite%22,%22latency%22:0,%22page_size%22:20,%22page%22:1}
+      https://openproxy.space/list/socks4
     ]
   }
   URL_SOURCES[:socks5] = %w[
     https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/socks5.txt
+    https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/protocols/socks5/data.txt
     https://www.my-proxy.com/free-socks-5-proxy.html
     https://list.proxylistplus.com/Socks-List-1
     https://list.proxylistplus.com/Socks-List-2
@@ -321,4 +339,8 @@ private
     https://cyber-gateway.net/get-proxy/free-proxy/57-free-proxy-google
     https://spys.me/socks.txt
   ] + URL_SOURCES[:socks4]
+
+  SELENIUM_URLS = %w[
+    https://www.cybersyndrome.net/pla6.html
+  ]
 end
