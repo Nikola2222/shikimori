@@ -13,7 +13,7 @@ class Anime < DbEntry
   DESYNCABLE = %w[
     name japanese synonyms kind episodes rating aired_on released_on status
     genre_ids genre_v2_ids duration description_en image poster external_links
-    is_censored
+    is_censored origin
   ]
 
   FORBIDDEN_ADULT_IDS = [
@@ -114,6 +114,9 @@ class Anime < DbEntry
     class_name: 'Topics::NewsTopic',
     as: :linked
 
+  belongs_to :origin_manga,
+    class_name: 'Manga',
+    optional: true
   has_many :related,
     class_name: 'RelatedAnime',
     foreign_key: :source_id,
@@ -225,26 +228,7 @@ class Anime < DbEntry
     in: Types::Anime::Kind.values,
     predicates: { prefix: true }
   enumerize :origin,
-    in: %i[
-      original
-      manga
-      web_manga
-      digital_manga
-      4-koma_manga
-      novel
-      web_novel
-      visual_novel
-      light_novel
-      game
-      card_game
-      music
-      radio
-      book
-      picture_book
-      mixed_media
-      other
-      unknown
-    ]
+    in: Types::Anime::Origin.values
   enumerize :status,
     in: Types::Anime::Status.values,
     predicates: true

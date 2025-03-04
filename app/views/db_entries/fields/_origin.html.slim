@@ -1,0 +1,11 @@
+= render 'application/note_from_club_page', club_page_id: 4953, is_version: true
+
+.cc-2
+  .c-column
+    = simple_form_for resource.object do |f|
+      = f.input :origin, include_blank: false
+      = render 'versions/reason'
+
+      .buttons
+        a.cancel href=resource.edit_url = t 'actions.cancel'
+        = f.button :magic_submit

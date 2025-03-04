@@ -15,24 +15,20 @@ const hostingPatterns = url => (
     youtube: prepare('youtube.com', url),
     vimeo: prepare('vimeo.com', url),
     youtu_be: prepare('youtu.be', url),
+    rutube: prepare('rutube.ru', url),
     // rutube_ru: prepare('rutube.ru', url),
     vk_com: prepare('vk.com', url),
     vkontakte_ru: prepare('vkontakte.ru', url),
     coub_com: prepare('coub.com', url),
     // twitch_tv: prepare('twitch.tv', url),
-    myvi_ru: prepare('myvi.ru', url),
-    myvi_tv: prepare('myvi.tv', url),
-    myvi_top: prepare('myvi.top', url),
     sibnet: prepare('sibnet.ru', url),
     yandex_ru: prepare('yandex.ru', url),
     // dailymotion_com: prepare('dailymotion.com', url),
     // streamable_com: prepare('streamable.com', url),
     // smotret_anime: prepare('smotretanime.ru', url),
-    ok_ru: prepare('ok.ru', url),
+    ok_ru: prepare('ok.ru', url)
     // youmite_ru: prepare('youmite.ru', url),
     // viuly_io: prepare('viuly.io', url),
-    stormo_xyz: prepare('stormo.xyz', url),
-    stormo_tv: prepare('stormo.tv', url)
     // mediafile_online: prepare('mediafile.online', url)
   }
 );
@@ -56,6 +52,8 @@ $.fn.extend({
 
       const $link = $root.find('.video-link');
       // const isSpecialCoub = $root.hasClass('b-coub');
+      const isYoutubeShorts = $root.hasClass('youtube_shorts') ||
+        $root.hasClass('rutube_shorts');
 
       $link.magnificPopup({
         preloader: false,
@@ -63,7 +61,7 @@ $.fn.extend({
         iframe: {
           // HTML markup of popup, `mfp-close` will be replaced by the close button
           markup: `
-            <div class='mfp-iframe-scaler'>
+            <div class='mfp-iframe-scaler${isYoutubeShorts ? ' youtube-shorts' : ''}'>
               <div class="mfp-close"></div>
               <iframe class="mfp-iframe" frameborder="0" allowfullscreen></iframe>
             </div>

@@ -25,13 +25,13 @@ class BbCodes::Tags::Html5VideoTag
 
 private
 
-  def html_tag url
+  def html_tag url # rubocop:disable Metrics/MethodLength
     webm_video = Retryable.retryable(RETRY_OPTIONS) do
-      WebmVideo.find_or_create_by url: url
+      WebmVideo.find_or_create_by(url:)
     end
 
     <<-HTML.squish
-      <div class="b-video fixed">
+      <div class="b-video">
         <div class="video-link">
           <img class="to-process" data-dynamic="html5_video" \
             src="#{DEFAULT_THUMBNAIL_NORMAL}" \

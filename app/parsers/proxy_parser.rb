@@ -212,8 +212,8 @@ private
   end
 
   def hidemyname
-    # purchased at 24-08-2024
-    url = 'https://hidemy.name/api/proxylist.php?out=js&lang=en&utf&code=777276949863880'
+    # purchased at 25-09-2024 until 25-09-2025
+    url = 'https://hidemy.name/api/proxylist.php?out=js&lang=en&utf&code=138782283104956'
 
     data =
       Rails.cache.fetch([url, :proxies, CACHE_VERSION], expires_in: 6.hours) do
@@ -281,7 +281,7 @@ private
 
     sleep 1
 
-    if data[:page] * data[:limit] < data[:total]
+    if data[:page] && data[:page] * data[:limit] < data[:total]
       proxies + proxyshare_com(page + 1)
     else
       proxies
@@ -315,9 +315,7 @@ private
       https://www.cybersyndrome.net/pla6.html
       https://cyber-gateway.net/get-proxy/free-proxy/24-free-http-proxy
       https://spys.me/proxy.txt
-      https://proxycompass.com/wp-admin/admin-ajax.php?action=proxylister_download&nonce=2b0ed349bc&format=txt&filter={%22protocols%22:%22HTTP,HTTPS%22,%22anonymity%22:%22Anonymous,Elite%22,%22latency%22:0,%22page_size%22:20,%22page%22:1}
       https://www.proxyshare.com/detection/proxyList?limit=500&page=1&sort_by=lastChecked&sort_type=desc
-      https://openproxy.space/list/http
     ],
     https: %w[
     ],
@@ -325,8 +323,6 @@ private
       https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/socks4.txt
       https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/protocols/socks4/data.txt
       https://www.my-proxy.com/free-socks-4-proxy.html
-      https://proxycompass.com/wp-admin/admin-ajax.php?action=proxylister_download&nonce=2b0ed349bc&format=txt&filter={%22anonymity%22:%22Anonymous,Elite%22,%22latency%22:0,%22page_size%22:20,%22page%22:1}
-      https://openproxy.space/list/socks4
     ]
   }
   URL_SOURCES[:socks5] = %w[
@@ -337,7 +333,6 @@ private
     https://list.proxylistplus.com/Socks-List-2
     https://cyber-gateway.net/get-proxy/free-proxy/56-free-socks-proxy
     https://cyber-gateway.net/get-proxy/free-proxy/57-free-proxy-google
-    https://spys.me/socks.txt
   ] + URL_SOURCES[:socks4]
 
   SELENIUM_URLS = %w[

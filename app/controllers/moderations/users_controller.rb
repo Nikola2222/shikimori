@@ -7,7 +7,7 @@ class Moderations::UsersController < ModerationsController
   MASS_BAN_NOTICE = 'Пользователи забанены на 10 лет. Запись о банах внесена в логи.'
 
   MASS_REGISTRATION_INTERVAL = 1.month
-  MASS_REGISTRATION_THRESHOLD = 5
+  MASS_REGISTRATION_THRESHOLD = 10
 
   def index # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     og noindex: true, nofollow: true
@@ -34,6 +34,10 @@ class Moderations::UsersController < ModerationsController
 
     @collection = users_scope.paginate(@page, PER_PAGE)
     @collection_size = @collection.except(:limit, :offset).size
+
+    @mass_registration_threshold = (
+      params[:mass_registration_threshold] || MASS_REGISTRATION_THRESHOLD
+    ).to_i
     @mass_ips = fetch_mass_ips
   end
 
@@ -68,10 +72,10 @@ private
       .created_on(MASS_REGISTRATION_INTERVAL.ago.to_date.to_s, Users::Query::ConditionType[:gte])
       .where(read_only_at: nil)
       .group_by(&:current_sign_in_ip)
-      .sort_by { |_ip, users| users.size }
       .map { |ip, users| [ip, users.size, users] }
-      .reverse.select { |(_ip, size, _users)| size > MASS_REGISTRATION_THRESHOLD }
-      .map(&:first)
+      .select { |(_ip, size, _users)| size > @mass_registration_threshold }
+      .sort_by { |ip, size, _users| [-size, ip] }
+      .each_with_object({}) { |(ip, size, _users), memo| memo[ip] = size }
   end
 
   def changelog_logger

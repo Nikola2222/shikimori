@@ -15,12 +15,6 @@ class VideoExtractor::OpenGraphExtractor < VideoExtractor::BaseExtractor
   # (?<hosting>viuly).io/video/[\wА-я_.-]+#{PARAMS} |
   # (?<hosting>mediafile).online/video/[\wА-я_-]+/[\wА-я_-]+/
 
-  # freeze on attept to make request from shiki
-  # (?<hosting>stormo).(?:xyz|tv)/videos/[\wА-я_-]+/[\wА-я_-]+/
-
-  # myvi is banned in RF
-  # (?:\w+\.)?(?<hosting>myvi).ru/watch/[\wА-я_-]+#{PARAMS} |
-
   # twitch no long supports og video tags
   # (?:\w+\.)?(?<hosting>twitch).tv(/[\wА-я_-]+/[\wА-я_-]+|/videos)/
     # [\wА-я_-]+#{PARAMS} |
@@ -31,7 +25,6 @@ class VideoExtractor::OpenGraphExtractor < VideoExtractor::BaseExtractor
 
   VIDEO_PROPERTIES_BY_HOSTING = {
     # viuly: %w[meta[property='og:video:iframe']],
-    stormo: %w[meta[property='og:video']]
   }
 
   VIDEO_PROPERTIES = %w[
@@ -44,11 +37,11 @@ class VideoExtractor::OpenGraphExtractor < VideoExtractor::BaseExtractor
 private
 
   def extract_image_url data
-    Url.new(data.first).without_protocol.to_s if data.first
+    Url.new(data.first).with_protocol.to_s if data.first
   end
 
   def extract_player_url data
-    Url.new(data.second).without_protocol.to_s if data.second
+    Url.new(data.second).with_protocol.to_s if data.second
   end
 
   def extract_hosting url

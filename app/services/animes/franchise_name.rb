@@ -40,7 +40,9 @@ class Animes::FranchiseName
     'Tennis no Oujisama' => 'tennis_no_ouji_sama',
     'Cutie Honey' => 'cutey_honey',
     'Hello Kitty no Cinderella' => 'hello_kitty',
-    'Haou Taikei Ryuu Knight' => 'haou_daikei_ryuu_knight'
+    'Haou Taikei Ryuu Knight' => 'haou_daikei_ryuu_knight',
+    'Kidou Keisatsu Patlabor' => 'mobile_police_patlabor',
+    'Douluo Dalu' => 'soul_land'
   }.transform_keys(&:downcase)
 
   def call

@@ -213,22 +213,26 @@ private
   SPECIAL_X300 = {
     provider: Types::Ad::Provider[:special],
     # url: 'https://ads.adfox.ru/707246/goLink?p1=cxdxi&p2=frfe&p5=nqxpb&pr=[RANDOM]',
-    # pixel: 'https://ads.adfox.ru/707246/getCode?p1=cxdxi&p2=frfe&pfc=exzsj&pfb=nqxpb&pr=[RANDOM]&ptrc=b',
+    # pixel: 'https://trk.mail.ru/i/v2u4c0',
     # convert -resize 50% app/assets/images/globals/events/2022-06-18/menu_1@2x.webp app/assets/images/globals/events/2022-06-18/menu_1.webp
-    url: 'https://red.lesta.ru/z4essyf1/?&pub_id=adisom_august24_banners_shikimori&erid=2VtzqxJT7Q8',
-    images: (1..1).map do |i|
-      {
-        src: "/assets/globals/events/2024-08-14/menu_#{i}.png",
-        src_2x: "/assets/globals/events/2024-08-14/menu_#{i}@2x.png"
-      }
-    end,
-    # images: [{
-    #   src: '/assets/globals/events/2024-04-22/menu_1.jpg',
-    #   src_2x: '/assets/globals/events/2024-04-22/menu_1@2x.jpg',
-    #   url: 'https://clck.ru/39yt6e'
-    # }],
+    # url: 'https://trk.mail.ru/c/v2u4c0',
+    # images: (1..1).map do |i|
+    #   {
+    #     src: "/assets/globals/events/2024-10-10/menu_#{i}.png",
+    #     src_2x: "/assets/globals/events/2024-10-10/menu_#{i}@2x.jpg"
+    #   }
+    # end,
+    images: [{
+      src: '/assets/globals/events/2024-12-01/menu_gen.jpg',
+      src_2x: '/assets/globals/events/2024-12-01/menu_gen@2x.jpg',
+      url: 'https://bit.ly/3AVbgZL'
+    }, {
+      src: '/assets/globals/events/2024-12-01/menu_zzz.jpg',
+      src_2x: '/assets/globals/events/2024-12-01/menu_zzz@2x.jpg',
+      url: 'https://bit.ly/4cTv3G5'
+    }],
     rules: {
-      cookie: 'i1_20240325',
+      cookie: 'i1_20241201',
       shows_per_week: 480 # 380 # 420 # 540
     },
     placement: Types::Ad::Placement[:menu],
@@ -237,20 +241,24 @@ private
   SPECIAL_X1170 = {
     provider: Types::Ad::Provider[:special],
     # url: 'https://ads.adfox.ru/707246/goLink?p1=cxdxi&p2=frfe&p5=nqxpb&pr=[RANDOM]',
-    # pixel: 'https://ads.adfox.ru/707246/getCode?p1=cxdxi&p2=frfe&pfc=exzsj&pfb=nqxpb&pr=[RANDOM]&ptrc=b',
+    # pixel: 'https://trk.mail.ru/i/v2u4c0',
     # convert -resize 50% app/assets/images/globals/events/2022-06-18/wide_1@2x.webp app/assets/images/globals/events/2022-06-18/wide_1.webp
-    url: 'https://red.lesta.ru/z4essyf1/?&pub_id=adisom_august24_banners_shikimori&erid=2VtzqxJT7Q8',
-    images: (1..1).map do |i|
-      {
-        src: "/assets/globals/events/2024-08-14/wide_#{i}.png",
-        src_2x: "/assets/globals/events/2024-08-14/wide_#{i}@2x.png"
-      }
-    end,
-    # images: [{
-    #   src: '/assets/globals/events/2024-07-19/wide_1.jpg',
-    #   src_2x: '/assets/globals/events/2024-07-19/wide_1@2x.jpg',
-    #   url: 'https://u.to/TTPKIA' # https://play.google.com/store/apps/details?id=com.aesar.krios
-    # }],
+    # url: 'https://trk.mail.ru/c/v2u4c0',
+    # images: (1..1).map do |i|
+    #   {
+    #     src: "/assets/globals/events/2024-10-10/wide_#{i}.png",
+    #     src_2x: "/assets/globals/events/2024-10-10/wide_#{i}@2x.jpg"
+    #   }
+    # end,
+    images: [{
+      src: '/assets/globals/events/2024-12-01/wide_gen.jpg',
+      src_2x: '/assets/globals/events/2024-12-01/wide_gen@2x.jpg',
+      url: 'https://bit.ly/3AVbgZL'
+    }, {
+      src: '/assets/globals/events/2024-12-01/wide_zzz.jpg',
+      src_2x: '/assets/globals/events/2024-12-01/wide_zzz@2x.jpg',
+      url: 'https://bit.ly/4cTv3G5'
+    }],
     # end,
     # html: (
     #   <<~HTML
@@ -280,11 +288,10 @@ private
   }
   SPECIAL_X894 = {
     provider: Types::Ad::Provider[:special],
-    url: 'https://red.lesta.ru/z4essyf1/?&pub_id=adisom_august24_banners_shikimori&erid=2VtzqxJT7Q8',
+    url: 'https://clck.ru/3F3swp',
     images: [{
-      src: '/assets/globals/events/2024-08-14/inner_1.png'
-      # src_2x: '/assets/globals/events/2024-03-25/wide_2@2x.png',
-      # url: 'https://u.to/vXiEIA?erid=2VtzqxJT7Q8' # 'https://www.домовой.ru/film/5235275/?erid=2VtzqxJT7Q8'
+      src: '/assets/globals/events/2024-12-15/inner_1.jpg',
+      src_2x: '/assets/globals/events/2024-12-15/inner_1@2x.jpg'
     }],
     # images: [{
     #   src: '/assets/globals/events/2023-10-20/wide_1.png',
@@ -428,13 +435,13 @@ private
     #   # Types::Ad::Type[:advrtr_240x400]
     # ],
     Types::Ad::Meta[:menu_240x400] => [
-      # Types::Ad::Type[:special_x300], # фигурки
+      # Types::Ad::Type[:special_x300], # saga
       # # Types::Ad::Type[:mt_240x400],
       Types::Ad::Type[:yd_240x400]
       # # Types::Ad::Type[:advrtr_240x400]
     ],
     Types::Ad::Meta[:menu_300x600] => [
-      # Types::Ad::Type[:special_x300], # фигурки
+      # Types::Ad::Type[:special_x300], # saga
       # # Types::Ad::Type[:mt_300x600],
       Types::Ad::Type[:yd_300x600]
       # # Types::Ad::Type[:advrtr_240x400],
@@ -454,7 +461,7 @@ private
       # Types::Ad::Type[:mt_footer_300x250]
     ],
     Types::Ad::Meta[:special_x1170] => [
-      # Types::Ad::Type[:special_x1170] # фигурки
+      # Types::Ad::Type[:special_x1170] # saga
       # # Types::Ad::Type[:yd_1170x200]
     ]
   }

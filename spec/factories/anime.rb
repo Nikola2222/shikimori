@@ -36,6 +36,8 @@ FactoryBot.define do
     russia_released_on { IncompleteDate.new }
     russia_released_on_hint { '' }
     more_info { nil }
+    origin { Types::Anime::Origin[:original] }
+    origin_manga { nil }
 
     after :build do |model|
       # for some reasons "aired_on=" from IncompleteDate::ComputedField is

@@ -1,11 +1,15 @@
 class AniMangaDecorator::RelatedDecorator < BaseDecorator
   instance_cache :related, :similar, :all
 
+  ADAPTATION_ORIGINS = %i[light_novel manga]
+
   def related
     all.map do |relation|
       RelatedEntry.new(
         (relation.anime || relation.manga).decorate,
-        relation.relation_kind_text
+        other_adaptation?(relation) ?
+          I18n.t('enumerize.related_anime.relation_kind.other') :
+          relation.relation_kind_text
       )
     end
   end
@@ -42,5 +46,20 @@ class AniMangaDecorator::RelatedDecorator < BaseDecorator
           relation.manga&.aired_on.presence ||
           Date.new(9999)
       end
+  end
+ 
+  def other_adaptation? relation # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    relation.adaptation? &&
+      relation.manga &&
+      anime? &&
+      (
+        (
+          origin&.to_sym&.in?(ADAPTATION_ORIGINS) &&
+          relation.manga.kind != origin
+        ) || (
+          origin_manga_id.present? &&
+          relation.manga_id != origin_manga_id
+        )
+      )
   end
 end

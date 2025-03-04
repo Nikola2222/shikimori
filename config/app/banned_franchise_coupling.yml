@@ -150,6 +150,9 @@
   - A13655 # Little Busters!
   - A50685 # Kaginado Season 2
 -
+  - A13659 # Ore no Imouto ga Konnani Kawaii Wake ga Nai.
+  - A60023 # Ore no Imouto ga Konnani Kawaii Wake ga Nai x Toaru Majutsu n
+-
   - A13677 # Ao no Exorcist Movie Special
   - A9627 # Kakko Kawaii Sengen!
 -
@@ -278,6 +281,10 @@
   - A1816 # Sonic X
   - A28351 # Hikari no Megami
 -
+  - A1816 # Sonic X
+  - A44042 # Holo no Graffiti
+  - A60368 # Hongami Precious Moment
+-
   - A18241 # Himitsukessha Taka no Tsume MAX
   - A30151 # Kamiusagi Rope: Warau Asa ni wa Fukuraitaru tte Maji ssuka!?
 -
@@ -360,10 +367,20 @@
   - A29821 # Channel 5.5
 -
   - A21 # One Piece
+  - A223 # Dragon Ball
+  - A59832 # Annecy Festival 60th Anniversary PVs
+-
+  - A21 # One Piece
   - A23933 # Kyutai Panic Adventure!
 -
   - A21 # One Piece
   - A23935 # Kyutai Panic Adventure Returns!
+-
+  - A21 # One Piece
+  - A30694 # Dragon Ball Super
+  - A3545 # Kochira Katsushikaku Kameari Kouenmae Hashutsujo
+  - A59934 # FNS 27-Jikan TV: Nihon no Rekishi Anime
+  - A951 # Chibi Maruko-chan
 -
   - A21 # One Piece
   - A3545 # Kochira Katsushikaku Kameari Kouenmae Hashutsujo
@@ -433,7 +450,7 @@
   - A34946 # Yuki no Joou
 -
   - A22497 # Hello Kitty no Kaguya-hime
-  - A29927 # Kaguya-hime
+  - A29927 # Kaguya-hime (1961)
 -
   - A2252 # Devilman
   - A2692 # CB Chara Go Nagai World
@@ -457,6 +474,12 @@
 -
   - A2253 # Mazinger Z
   - A31699 # Good Morning!!! Doronjo
+-
+  - A2253 # Mazinger Z
+  - A51431 # Mazinger Z x Hello Kitty x Chogokin
+-
+  - A22563 # Hangyodon no Hadaka no Ousama
+  - A42501 # Hello Kitty no Kaguya-hime (2001)
 -
   - A22627 # Santa-san to Tonakai Kuppi
   - A29543 # Kitty to Daniel no Suteki na Christmas
@@ -585,36 +608,18 @@
 -
   - A28149 # Nihon Animator Mihonichi
   - A30 # Shinseiki Evangelion
--
-  - A28149 # Nihon Animator Mihonichi
-  - A30 # Shinseiki Evangelion
+  - A32681 # Uchuu Patrol Luluco
+  - A33741 # Kidou Keisatsu Patlabor: Reboot
   - A3444 # The☆Ultraman
   - A34549 # Ryuu no Haisha
+  - A35847 # SSSS.Gridman
   - A3785 # Evangelion Movie 3: Q
+  - A56588 # Ochibi-san
   - A80 # Kidou Senshi Gundam
   - M63545 # Bikachou Shinshi Kaikoroku
   - M69047 # Ochibi-san
 -
   - A28149 # Nihon Animator Mihonichi
-  - A30 # Shinseiki Evangelion
-  - A3444 # The☆Ultraman
-  - A3785 # Evangelion Movie 3: Q
-  - A80 # Kidou Senshi Gundam
--
-  - A28149 # Nihon Animator Mihonichi
-  - A32681 # Uchuu Patrol Luluco
--
-  - A28149 # Nihon Animator Mihonichi
-  - A3444 # The☆Ultraman
--
-  - A28149 # Nihon Animator Mihonichi
-  - A3785 # Evangelion Movie 3: Q
--
-  - A28149 # Nihon Animator Mihonichi
--
-  - A28149 # Nihon Animator Mihonichi
-  - A80 # Kidou Senshi Gundam
-  - A9170 # Kimi ga Nozomu Eien Special
 -
   - A283 # Akage no Anne
   - A37423 # Shiawase Pasta Story
@@ -1043,11 +1048,18 @@
   - A42940 # Hanma Baki: Son of Ogre
   - A54022 # Saikyou Donbei x Hanma Baki: Saikyou no Dongitsune Genrutsuts
 -
+  - A42963 # Kanojo, Okarishimasu 2nd Season
+  - A54100 # Ienai feat. asmi
+-
   - A4386 # Great Mazinger tai Getter Robo G: Kuuchuu Daigekitotsu
   - A4486 # Getter Robo G
 -
   - A44042 # Holo no Graffiti
   - A55591 # Idol (Mori Calliope Cover)
+-
+  - A44042 # Holo no Graffiti
+  - A55848 # Isekai Suicide Squad
+  - A59750 # Go-Getters
 -
   - A44042 # Holo no Graffiti
   - A56015 # Miraijima
@@ -1088,6 +1100,9 @@
   - A50410 # One Piece Film: Red
   - A52872 # Utakata Lullaby
 -
+  - A50606 # Ayakashi Triangle
+  - A54255 # Itowanai feat. Miyu Tomita ＆ Kana Ichinose
+-
   - A50685 # Kaginado Season 2
   - A6547 # Angel Beats!
 -
@@ -1115,6 +1130,9 @@
   - A54123 # Shixiong A Shixiong
   - A58086 # Guonian Zhe Lianmeng: Xun Long Ji
 -
+  - A54142 # Cardfight!! Vanguard: Divinez
+  - A57846 # VSPO! x Vanguard Animation PV
+-
   - A54209 # Minna to Manner wo Manabou
   - A9756 # Mahou Shoujo Madoka★Magica
 -
@@ -1123,6 +1141,9 @@
 -
   - A58086 # Guonian Zhe Lianmeng: Xun Long Ji
   - A9806 # Qin Shi Mingyue: Bai Bu Fei Jian
+-
+  - A60023 # Ore no Imouto ga Konnani Kawaii Wake ga Nai x Toaru Majutsu n
+  - A8769 # Ore no Imouto ga Konnani Kawaii Wake ga Nai
 -
   - A6511 # Chou Seimeitai Transformers Beast Wars Neo
 -

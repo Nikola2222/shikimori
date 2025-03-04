@@ -1,4 +1,4 @@
-BUGSNAG_API_KEY = '78fecfbe94c330b71cf8efb6e7af009d'
+BUGSNAG_API_KEY = 'fc3f04d9eb7e05ff28cc0e8a568efc54'
 
 if defined? Bugsnag
   Bugsnag.configure do |config|

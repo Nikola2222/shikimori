@@ -22,10 +22,10 @@ module Clockwork
     NamedLogger.clockwork.info 'half-hourly.import finished'
   end
 
-  every 15.minutes, 'kill-frozen-postgres-queries' do
+  every 15.minutes, 'kill-freezed-postgres-queries' do
     KillFreezedPostgresQueries.perform_async
 
-    NamedLogger.clockwork.info 'kill-frozen-postgres-queries finished'
+    NamedLogger.clockwork.info 'kill-freezed-postgres-queries finished'
   end
 
   every 1.hour, 'hourly', at: '**:45' do
@@ -103,7 +103,7 @@ module Clockwork
     Votable::CleanupCheatBotVotes.perform_async
     Users::CleanupDoorkeeperTokens.perform_async
     Users::MarkAsCompletedUnavailableAnimes.perform_async
-    Users::AssignSpecialRoles.perform_async
+    Users::AssignSpecialRoles.perform_async Time.zone.today.to_s
 
     ListImports::Cleanup.perform_async
     Achievements::NekoRestart.perform_async
@@ -143,7 +143,7 @@ module Clockwork
   every 1.week, 'weekly.stuff.2', at: 'Monday 02:45' do
     Messages::CleanupOutdated.perform_async
     UserImagesCleaner.perform_async
-    SakuhindbImporter.perform_async with_fail: true
+    # SakuhindbImporter.perform_async with_fail: true
     # BadVideosCleaner.perform_async
     Screenshots::Cleanup.perform_async
 

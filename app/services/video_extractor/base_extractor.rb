@@ -4,7 +4,7 @@ class VideoExtractor::BaseExtractor
   attr_implement :parse_data, :extract_image_url, :extract_player_url
 
   ALLOWED_EXCEPTIONS = Network::FaradayGet::NET_ERRORS
-  PARAMS = /(?:(?:\?|\#|&amp;|&)[\w=+%-]+)*/.source
+  PARAMS = %r{/?(?:(?:\?|\#|&amp;|&)[\w=+%-]+)*}.source
 
   USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' \
     '(KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36'
@@ -30,7 +30,7 @@ class VideoExtractor::BaseExtractor
 
   def fetch_remote url
     Retryable.retryable tries: 2, on: ALLOWED_EXCEPTIONS, sleep: 1 do
-      PgCache.fetch url, expires_in: 2.years do
+      PgCache.fetch url, expires_in: 4.months do
         fetch_and_build_entry url
       end
     end
@@ -102,7 +102,7 @@ private
       .name
       .to_underscore
       .sub(/.*::_?/, '')
-      .sub(/_extractor/, '')
+      .sub('_extractor', '')
       .to_sym
   end
 

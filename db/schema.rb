@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_13_145317) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_11_184825) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -178,9 +178,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_13_145317) do
     t.date "released_on_computed"
     t.integer "genre_v2_ids", default: [], null: false, array: true
     t.string "more_info"
+    t.bigint "origin_manga_id"
     t.index ["aired_on_computed"], name: "index_animes_on_aired_on_computed"
     t.index ["kind"], name: "index_animes_on_kind"
     t.index ["name"], name: "index_animes_on_name"
+    t.index ["origin_manga_id"], name: "index_animes_on_origin_manga_id"
     t.index ["rating"], name: "index_animes_on_rating"
     t.index ["russian"], name: "index_animes_on_russian"
     t.index ["score"], name: "index_animes_on_score"
@@ -1099,9 +1101,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_13_145317) do
     t.string "prior_value", limit: 255
     t.bigint "anime_id"
     t.bigint "manga_id"
-    t.index ["updated_at"], name: "index_user_histories_on_updated_at"
     t.index ["user_id", "action"], name: "user_histories_UserDataFetcherBase_latest_import_index", where: "((action)::text = ANY (ARRAY[('mal_anime_import'::character varying)::text, ('ap_anime_import'::character varying)::text, ('anime_history_clear'::character varying)::text, ('mal_manga_import'::character varying)::text, ('ap_manga_import'::character varying)::text, ('manga_history_clear'::character varying)::text]))"
-    t.index ["user_id"], name: "index_user_histories_on_user_id"
+    t.index ["user_id", "updated_at", "id"], name: "index_user_histories_on_user_id_updated_at_id", order: { updated_at: :desc, id: :desc }
   end
 
   create_table "user_images", force: :cascade do |t|
@@ -1316,6 +1317,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_13_145317) do
   add_foreign_key "abuse_requests", "users", column: "approver_id"
   add_foreign_key "anime_stat_histories", "animes"
   add_foreign_key "anime_stat_histories", "mangas"
+  add_foreign_key "animes", "mangas", column: "origin_manga_id"
   add_foreign_key "bans", "abuse_requests"
   add_foreign_key "bans", "users"
   add_foreign_key "bans", "users", column: "moderator_id"

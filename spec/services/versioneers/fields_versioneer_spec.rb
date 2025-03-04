@@ -1,5 +1,5 @@
 describe Versioneers::FieldsVersioneer do
-  let(:service) { described_class.new anime, associated: associated }
+  let(:service) { described_class.new anime, associated: }
 
   let(:anime) { create :anime, name: 'test', episodes: 3, episodes_aired: 5 }
   let(:associated) { [nil, author].sample }
@@ -55,6 +55,19 @@ describe Versioneers::FieldsVersioneer do
         expect(version).to_not be_changed
         expect(version).to be_pending
         expect(version.item_diff).to eq 'name' => ['test', 'zzz']
+      end
+    end
+
+    describe 'incomplete date change' do
+      let(:anime) { create :anime, aired_on: {} }
+
+      describe 'no changes' do
+        let(:changes) do
+          {
+            aired_on: { 'day' => '', 'year' => '', 'month' => '' }
+          }
+        end
+        it { expect(version).to be_new_record }
       end
     end
 
@@ -123,7 +136,7 @@ describe Versioneers::FieldsVersioneer do
         expect(version.class).to eq Version
         expect(version).to have_attributes(
           user: author,
-          reason: reason,
+          reason:,
           item_diff: result_diff,
           item: anime,
           moderator: author
@@ -143,7 +156,7 @@ describe Versioneers::FieldsVersioneer do
         expect(version.class).to eq Version
         expect(version).to have_attributes(
           user: author,
-          reason: reason,
+          reason:,
           item_diff: result_diff,
           item: anime,
           moderator: nil

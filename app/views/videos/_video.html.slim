@@ -1,5 +1,6 @@
-.c-video.b-video.unprocessed[
-  class="#{video.hosting} #{"entry-#{video_counter+1}" if defined? video_counter} #{:fixed unless defined? video_counter}"
+.b-video.unprocessed[
+  class=video.hosting
+  class="#{"c-video entry-#{video_counter+1}" if defined? video_counter}"
 ]
   - if defined? edition
     .mobile-edit
@@ -20,7 +21,7 @@
 
   a.video-link[
     href=video.url
-    data-href=Url.new(video.player_url).without_protocol.to_s
+    data-href=Url.new(video.player_url).with_protocol.to_s
   ]
     img[
       src=video.camo_image_url
@@ -30,8 +31,7 @@
   - if video.name.present?
     span.name title=video.name = video.name
 
-  span.marker
-    - if defined?(video_counter) || defined?(show_kind)
-      = video.kind_text
-    - else
-      = video.hosting
+  - if defined?(video_counter) || defined?(show_kind)
+    span.marker = video.kind_text
+  - elsif video.hosting
+    span.marker = video.hosting_marker

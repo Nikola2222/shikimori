@@ -53,7 +53,11 @@ module Shikimori
   NAME_RU = 'Шикимори'
   NAME_EN = 'Shikimori'
 
-  STATIC_SUBDOMAINS = %w[desu]
+  # STATIC_SUBDOMAINS = %w[desu]
+  # STATIC_PROXIED_SUBDOMAINS = %w[moe dere] # moe - shiki_images_proxy, dere - shiki_proxy
+  STATIC_PROXIED_SUBDOMAINS = %w[dere] # moe - shiki_images_proxy, dere - shiki_proxy
+  STATIC_SUBDOMAINS = STATIC_PROXIED_SUBDOMAINS
+  STATIC_CLOUDFLARE_SUBDOMAINS = %w[nyaa] # subdomain proxied by cloudflare into the main server
   # STATIC_SUBDOMAINS = %w[nyaa kawai moe desu dere]
   EMAIL = 'admin@shikimori.me'
   # EMAIL_DATA_DELETION = 'mail+data_deletion@shikimori.org'
@@ -68,34 +72,35 @@ module Shikimori
 
   IGNORED_EXCEPTIONS = %w[
     AbstractController::ActionNotFound
+    ActionController::BadRequest
     ActionController::InvalidAuthenticityToken
     ActionController::ParameterMissing
     ActionController::RoutingError
     ActionController::UnknownFormat
     ActionController::UnknownHttpMethod
-    ActionController::BadRequest
+    ActionDispatch::Http::MimeNegotiation::InvalidType
     ActionDispatch::RemoteIp::IpSpoofAttackError
     ActiveRecord::PreparedStatementCacheExpired
     ActiveRecord::RecordNotFound
-    CanCan::AccessDenied
-    I18n::InvalidLocale
-    Unicorn::ClientShutdown
     AgeRestricted
-    RknBanned
-    MismatchedEntries
-    InvalidEpisodesError
-    CopyrightedResource
-    Net::SMTPServerBusy
-    Net::SMTPFatalError
-    Interrupt
     Apipie::ParamMissing
+    CanCan::AccessDenied
+    CopyrightedResource
+    EmptyContentError
+    Errors::NotIdentifiedByImageMagickError
+    I18n::InvalidLocale
+    Interrupt
+    InvalidEpisodesError
     InvalidIdError
     InvalidParameterError
-    EmptyContentError
     MalParser::RecordNotFound
-    Errors::NotIdentifiedByImageMagickError
+    MismatchedEntries
+    Net::SMTPFatalError
+    Net::SMTPServerBusy
+    RknBanned
     Sidekiq::Shutdown
     Terrapin::ExitStatusError
+    Unicorn::ClientShutdown
   ]
 
   IS_SUMMARIES_ENABLED = !Rails.env.production?
@@ -155,6 +160,10 @@ module Shikimori
 
     if defined?(Redirecter) && !ENV['IS_LOCAL_RUN'] # not defined for clockwork
       config.middleware.use Redirecter
+    end
+
+    unless Rails.env.test?
+      config.middleware.use ImagesSubdomainReplacement
     end
 
     config.middleware.insert 0, Rack::UTF8Sanitizer

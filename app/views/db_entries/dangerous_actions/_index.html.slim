@@ -1,14 +1,47 @@
-- if can?(:merge, resource) || can?(:destroy, resource)
+- if can?(:dangerous_action, resource) || can?(:destroy, resource)
   .b-dangerous-actions
     = spoiler t('.dangerous_actions') + ' (супер модератор)' do
       .to-process data-dynamic='tabs'
         .block
-          div class=(resource.anime? || resource.kinda_manga? ? 'fc-actions' : 'fc-2')
-            - if can? :merge, resource
+          .fc-actions
+            - if can? :dangerous_action, resource
+              .f-column
+                - unless resource.is_a? Character
+                  - if resource.person_roles.where.not(character_id: nil).any?
+                    a.b-link_button.light-red[
+                      href=resource.clear_related_characters_url
+                      data-method='post'
+                      data-confirm=t('actions.confirm')
+                    ] Оборвать связи с персонажами
+              .f-column
+                - unless resource.is_a? Person
+                  - if resource.person_roles.where.not(person_id: nil).any?
+                    a.b-link_button.light-red[
+                      href=resource.clear_related_people_url
+                      data-method='post'
+                      data-confirm=t('actions.confirm')
+                    ] Оборвать связи с людьми
+              .f-column
+                - if resource.anime? || resource.kinda_manga?
+                  - if resource.related.any?
+                    a.b-link_button.light-red[
+                      href=resource.clear_related_titles_url
+                      data-method='post'
+                      data-confirm=t('actions.confirm')
+                    ] Оборвать связи с тайтлами
+                - else
+                  - if resource.person_roles.where.not(anime_id: nil).any? || resource.person_roles.where.not(manga_id: nil).any?
+                    a.b-link_button.light-red[
+                      href=resource.clear_related_titles_url
+                      data-method='post'
+                      data-confirm=t('actions.confirm')
+                    ] Оборвать связи с тайтлами
+
               .f-column
                 .b-link_button.light-red[
                   data-tab-switch
                 ] = t('.merge_as_duplicate')
+
               - if resource.anime? || resource.kinda_manga?
                 .f-column
                   .b-link_button.light-red[
@@ -16,11 +49,12 @@
                   ]
                     = t('.merge_as_episode')
 
-                .f-column
-                  .b-link_button.light-red[
-                    data-tab-switch
-                  ]
-                    = t('.merge_episodes')
+                / .f-column
+                /   .b-link_button.light-red[
+                /     data-tab-switch
+                /   ]
+                /     = t('.merge_episodes')
+
             - if can? :destroy, resource
               .f-column
                 .b-link_button.light-red[
@@ -29,7 +63,7 @@
                   = t('.deletion')
 
         .block_m
-          - if can? :merge, resource
+          - if can? :dangerous_action, resource
             .hidden[
               data-tab
             ]
@@ -111,15 +145,15 @@
                     value=t('.send_for_merging')
                   ]
 
-              .hidden[
-                data-tab
-              ]
-                = render 'db_entries/dangerous_actions/warning_headline',
-                  is_merge: true,
-                  resource: resource,
-                  headline: "#{t '.merge_episodes'} (#{t '.into_here'})" do
-                h1.mb-5 Not implemented yet
-                = render 'db_entries/dangerous_actions/warning_mal_presence', resource: resource
+              / .hidden[
+              /   data-tab
+              / ]
+              /   = render 'db_entries/dangerous_actions/warning_headline',
+              /     is_merge: true,
+              /     resource: resource,
+              /     headline: "#{t '.merge_episodes'} (#{t '.into_here'})" do
+              /   h1.mb-5 Not implemented yet
+              /   = render 'db_entries/dangerous_actions/warning_mal_presence', resource: resource
 
           - if can? :destroy, resource
             .hidden[

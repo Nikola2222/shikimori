@@ -25,6 +25,15 @@ class VideoExtractor::YoutubeExtractor < VideoExtractor::BaseExtractor
       youtube\.com/(?:embed|v)/
       (?<key>[\w_-]+)
       (?:\?start=(?<time>\w+))?
+
+      |
+
+      youtube.com/(?<shorts>shorts)/
+      (?<key>[\w_-]+)
+      (?:
+        [?&]
+        [\w_-]+(?:=[\w_-]+)?
+      )*
     )
   }xi
 
@@ -34,8 +43,14 @@ private
     false
   end
 
+  def extract_hosting url
+    url.include?('/shorts/') ?
+      Types::Video::Hosting[:youtube_shorts] :
+      super
+  end
+
   def extract_image_url match
-    "//img.youtube.com/vi/#{match[:key]}/hqdefault.jpg"
+    "//img.youtube.com/vi/#{match[:key]}/#{match[:shorts] ? :oardefault : :hqdefault}.jpg"
   end
 
   def extract_player_url match
@@ -52,7 +67,9 @@ private
   #   false
   # end
 
-  def normalize_matched_url _url, match
-    "https://youtu.be/#{match[:key]}"
+  def normalize_matched_url url, match
+    url.include?('/shorts/') ?
+      "https://www.youtube.com/shorts/#{match[:key]}" :
+      "https://youtu.be/#{match[:key]}"
   end
 end

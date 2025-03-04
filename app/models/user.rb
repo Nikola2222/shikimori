@@ -277,13 +277,6 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
       .order(updated_at: :desc, id: :desc)
   end
 
-  # TODO: remove
-  def anime_history
-    @anime_history ||= history
-      .where(target_type: [Anime.name, Manga.name])
-      .includes(:anime, :manga)
-  end
-
   def to_param nickname = self.nickname(true)
     nickname.tr(' ', '+')
   end
@@ -353,7 +346,8 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def banned?
-    !!(read_only_at && read_only_at > Time.zone.now)
+    permaban? ||
+      !!(read_only_at && read_only_at > Time.zone.now)
   end
 
   def active?
@@ -404,15 +398,15 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def staff?
-    (roles.to_a & STAFF_ROLES).any?
+    roles.to_a.intersect? STAFF_ROLES
   end
 
   def moderation_versions?
-    (roles.to_a & MODERATION_VERSIONS_ROLES).any?
+    roles.to_a.intersect? MODERATION_VERSIONS_ROLES
   end
 
   def moderation_staff?
-    (roles.to_a & MODERATION_STAFF_ROLES).any?
+    roles.to_a.intersect? MODERATION_STAFF_ROLES
   end
 
   def generated_email?
@@ -420,9 +414,7 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def excluded_from_statistics?
-    cheat_bot? ||
-      completed_announced_animes? ||
-      ignored_in_achievement_statistics?
+    roles.map(&:to_sym).intersect? Types::User::ROLES_EXCLUDED_FROM_STATISTICS
   end
 
   def age

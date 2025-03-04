@@ -20,6 +20,7 @@ describe Anime do
     it { is_expected.to have_many :ongoing_news_topics }
     it { is_expected.to have_many :released_news_topics }
 
+    it { is_expected.to belong_to(:origin_manga).optional }
     it { is_expected.to have_many(:related).dependent :destroy }
     it { is_expected.to have_many :related_animes }
     it { is_expected.to have_many :related_mangas }
@@ -69,7 +70,7 @@ describe Anime do
     it { is_expected.to enumerize(:kind).in(*Types::Anime::Kind.values) }
     it { is_expected.to enumerize(:status).in(*Types::Anime::Status.values) }
     it { is_expected.to enumerize(:rating).in(*Types::Anime::Rating.values) }
-    it { is_expected.to enumerize(:origin) }
+    it { is_expected.to enumerize(:origin).in(*Types::Anime::Origin.values) }
     # it { is_expected.to enumerize(:options).in(*Types::Anime::Options.values) }
   end
 

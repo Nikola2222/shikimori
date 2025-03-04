@@ -88,7 +88,7 @@ class PagesController < ShikimoriController # rubocop:disable ClassLength
 
   def feedback
     @feedback_message = FeedbackMessage.new(
-      from_id: (current_user.try(:id) || User::GUEST_ID),
+      from_id: current_user.try(:id) || User::GUEST_ID,
       to_id: User::MORR_ID,
       kind: MessageType::PRIVATE
     )
@@ -247,14 +247,27 @@ class PagesController < ShikimoriController # rubocop:disable ClassLength
   def vue
   end
 
-  def http_headers
-    raise CanCan::AccessDenied unless current_user&.admin?
+  def http_headers # rubocop:disable Metrics/AbcSize
+    unless current_user&.admin? ||
+        params[:token] == Rails.application.secrets[:api][:anime_videos][:token]
+      raise CanCan::AccessDenied
+    end
 
     render json: {
       'request.remote_ip': request.remote_ip,
-      "request.env['HTTP_X_FORWARDED_FOR']": request.env['HTTP_X_FORWARDED_FOR'],
-      "request.env['HTTP_X_REAL_IP']": request.env['HTTP_X_REAL_IP'],
-      "request.env['REMOTE_ADDR']": request.env['REMOTE_ADDR']
+      'request.ssl?': request.ssl?,
+      **(
+        request.env.keys
+          .select { |key| key.starts_with? 'HTTP_' }
+          .sort
+          .index_with { |key| request.env[key] }
+      )
+    }
+  end
+
+  def http_cf
+    render json: {
+      HTTP_CF_IPCOUNTRY: request.env['HTTP_CF_IPCOUNTRY']
     }
   end
 

@@ -129,6 +129,20 @@ describe VideoExtractor::YoutubeExtractor do
           end
         end
       end
+
+      context 'shorts' do
+        let(:url) { 'https://youtube.com/shorts/yFg1-tIfvjc?si=6VLqJBX6zoeXrja2' }
+
+        it do
+          is_expected.to have_attributes(
+            hosting: :youtube_shorts,
+            image_url: '//img.youtube.com/vi/yFg1-tIfvjc/oardefault.jpg',
+            player_url: '//youtube.com/embed/yFg1-tIfvjc',
+            normalized_url: 'https://www.youtube.com/shorts/yFg1-tIfvjc'
+          )
+        end
+        it { expect(url.match?(FULL_URL_REGEX)).to eq true }
+      end
     end
 
     context 'invalid url' do

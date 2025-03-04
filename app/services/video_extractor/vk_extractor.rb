@@ -9,7 +9,7 @@ class VideoExtractor::VkExtractor < VideoExtractor::BaseExtractor
   TOO_MANY_REQUESTS_EROOR_CODE = 6
 
   def normalize_url url
-    super(url).gsub('//vkontakte.ru', '//vk.com')
+    super.gsub('//vkontakte.ru', '//vk.com')
   end
 
 private
@@ -25,7 +25,6 @@ private
 
     Url
       .new(url)
-      .without_protocol
       .to_s
   end
 
@@ -35,7 +34,6 @@ private
 
     Url
       .new(url)
-      .without_protocol
       .to_s
       .gsub(/&__ref=[^&]+/, '')
       .gsub(/&api_hash=[^&]+/, '')

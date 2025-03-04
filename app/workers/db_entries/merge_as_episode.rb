@@ -15,8 +15,9 @@ class DbEntries::MergeAsEpisode
     episode_field,
     user_id
   )
-    NamedLogger.merge_as_episode.info(
-      "#{type}##{from_id} -> #{type}#{to_id} AsEpisode##{as_episode} " \
+    NamedLogger.dangerous_action.info(
+      'merge_as_episode ' \
+        "#{type}##{from_id} -> #{type}#{to_id} AsEpisode##{as_episode} " \
         "Label##{episode_label} " \
         "EpisodeField##{episode_field} User##{user_id}"
     )

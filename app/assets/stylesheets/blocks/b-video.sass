@@ -7,37 +7,56 @@
 .cc > .c-video
   margin-bottom: 15px
 
+.ProseMirror span.b-video
+  display: inline-flex
+
 .b-video
   +image_editable
   +media
 
-  &.fixed
-    .video-link img
-      width: $media_width
+  &.youtube_shorts,
+  &.rutube_shorts
+    .video-link
+      width: 76px
 
-    &.twitch, &.myvi, &.coub
-      .video-link img
-        max-height: $media_height
+    .marker
+      font-size: 10px
+      letter-spacing: normal
+      padding: 0 6px
+      right: 3px
+
+  &.c-video
+    .video-link
+      height: auto
+      width: auto
+
+      img
         width: auto
+        height: auto
 
-    &.dailymotion
-      max-height: $media_height
+    &.shrinked-1_3
+      .video-link img
+        margin-top: -9.55%
+        margin-bottom: -9.55%
 
-  &.shrinked-1_3
-    .video-link img
-      margin-top: -9.55%
-      margin-bottom: -9.55%
-
-  &.shrinked-1_5
-    .video-link img
-      margin-top: -5.25%
-      margin-bottom: -5.25%
+    &.shrinked-1_5
+      .video-link img
+        margin-top: -5.25%
+        margin-bottom: -5.25%
 
   .video-link
     background: #212121
     cursor: pointer // it can be div for html5 video
-    display: inline-block
+    display: inline-flex
+    height: $media_height
     overflow: hidden
+    width: $media_width
+
+    img
+      height: 100%
+      object-fit: cover
+      object-position: center
+      width: 100%
 
     &:hover:before
       opacity: 1
@@ -83,8 +102,10 @@
       line-height: 20px
       padding: 0 7px 0 2px
 
-  &.youtube .marker:before
-    color: #ed443c
+  &.youtube,
+  &.youtube_shorts
+    .marker:before
+      color: #ed443c
 
   &.vk .marker:before
     color: #5992e8

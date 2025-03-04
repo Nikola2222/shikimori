@@ -49,6 +49,9 @@ Rails.application.routes.draw do
       delete :destroy
       delete :merge_into_other
       delete :merge_as_episode
+      post :clear_related_characters
+      post :clear_related_people
+      post :clear_related_titles
     end
 
     collection do
@@ -97,6 +100,7 @@ Rails.application.routes.draw do
       get :raise_exception
       get :timeout_120s
       get :http_headers
+      get :http_cf
       get :my_target_ad
       get :how_to_edit_achievements
       get :csrf_token
@@ -223,7 +227,9 @@ Rails.application.routes.draw do
     resources :mal_more_infos, only: [] do
       get '(/page/:page)' => :index, as: '', on: :collection
     end
-    resources :changelogs, only: %i[index show]
+    resources :changelogs, only: %i[index show] do
+      get :dangerous_actions, on: :collection
+    end
 
     resource :authors, only: %i[show edit update]
 
@@ -667,7 +673,12 @@ Rails.application.routes.draw do
   end
 
   resource :moderations, only: %i[show] do
-    get :missing_screenshots, on: :collection
+    collection do
+      get :missing_screenshots
+      post :restart_unicorn
+      post :restart_sidekiq
+      post :clear_cache
+    end
   end
 
   resource :tests, only: %i[show] do
@@ -851,7 +862,7 @@ Rails.application.routes.draw do
   resources :animes, only: %i[edit update] do
     concerns :db_entry, fields: Regexp.new(%w[
       name russian synonyms japanese license_name_ru description_ru description_en image poster
-      status kind episodes rating duration
+      status kind episodes rating origin origin_manga_id duration
       screenshots videos torrents_name imageboard_tag coub_tags aired_on released_on genre_ids genre_v2_ids
       external_links fansubbers fandubbers desynced options licensors
       is_censored digital_released_on russia_released_on more_info

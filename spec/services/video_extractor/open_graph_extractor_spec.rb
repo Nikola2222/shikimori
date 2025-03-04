@@ -22,14 +22,6 @@ describe VideoExtractor::OpenGraphExtractor, :vcr do
     #   end
     # end
 
-    # context 'myvi' do
-    #   let(:url) { 'http://asia.myvi.ru/watch/Vojna-Magov_eQ4now9R-0KG9eoESX_N-A2' }
-
-    #   its(:hosting) { is_expected.to eq 'myvi' }
-    #   its(:image_url) { is_expected.to eq '//images.myvi.ru/animeicon/25/e6/58917.jpg' }
-    #   its(:player_url) { is_expected.to eq '//myvi.ru/player/flash/oI_SgyRHWdMLI6UU2pmRESiY4Y-Ie0wAnu3jBetGxgY9wJFPgg4yJA4JzsT1kQ7a35LOr3hG3K7g1' }
-    # end
-
     context 'sibnet' do
       let(:url) { 'http://video.sibnet.ru/video1234982-03__Poverivshiy_v_grezyi' }
 
@@ -37,8 +29,8 @@ describe VideoExtractor::OpenGraphExtractor, :vcr do
       it do
         is_expected.to have_attributes(
           hosting: :sibnet,
-          image_url: '//video.sibnet.ru/upload/cover/video_1234982_0.jpg',
-          player_url: '//video.sibnet.ru/shell.php?videoid=1234982'
+          image_url: 'https://video.sibnet.ru/upload/cover/video_1234982_0.jpg',
+          player_url: 'https://video.sibnet.ru/shell.php?videoid=1234982'
         )
       end
 
@@ -53,8 +45,8 @@ describe VideoExtractor::OpenGraphExtractor, :vcr do
         it do
           is_expected.to have_attributes(
             hosting: :sibnet,
-            image_url: '//video.sibnet.ru/upload/cover/video_1234982_0.jpg',
-            player_url: '//video.sibnet.ru/shell.php?videoid=1234982'
+            image_url: 'https://video.sibnet.ru/upload/cover/video_1234982_0.jpg',
+            player_url: 'https://video.sibnet.ru/shell.php?videoid=1234982'
           )
         end
       end
@@ -101,17 +93,6 @@ describe VideoExtractor::OpenGraphExtractor, :vcr do
     #     )
     #   end
     #   its(:player_url) { is_expected.to eq '//viuly.io/embed/video-of-the-company-bizzilion.-start-making-money-on-television--online-broadcasts-with-bizzilion-2138479' }
-    # end
-
-    # describe 'stormo' do
-    #   let(:url) { 'https://stormo.xyz/videos/245/stiv-djobs/' }
-    #   its(:hosting) { is_expected.to eq 'stormo' }
-    #   its(:image_url) do
-    #     is_expected.to eq(
-    #       '//stormo.xyz/contents/videos_screenshots/0/245/preview.mp4.jpg'
-    #     )
-    #   end
-    #   its(:player_url) { is_expected.to eq '//stormo.xyz/embed/245/' }
     # end
 
     # describe 'mediafile.online' do

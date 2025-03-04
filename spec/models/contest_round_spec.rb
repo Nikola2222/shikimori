@@ -8,10 +8,10 @@ describe ContestRound do
     subject { build :contest_round, state, matches: }
     let(:matches) { [] }
     let(:contest_match_created) { build :contest_match, :created }
-    let(:contest_match_may_freeze) do
+    let(:contest_match_may_to_freezed) do
       build :contest_match, :started, finished_on: Time.zone.yesterday
     end
-    let(:contest_match_frozen) { build :contest_match, :frozen }
+    let(:contest_match_freezed) { build :contest_match, :freezed }
     let(:contest_match_finished) { build :contest_match, :finished }
     let(:contest_match_may_not_freeze) do
       build :contest_match, :started, finished_on: Time.zone.today
@@ -47,8 +47,8 @@ describe ContestRound do
         context 'all matches may be finished' do
           let(:matches) do
             [
-              contest_match_may_freeze,
-              contest_match_frozen,
+              contest_match_may_to_freezed,
+              contest_match_freezed,
               contest_match_finished
             ]
           end

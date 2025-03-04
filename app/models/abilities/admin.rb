@@ -34,6 +34,7 @@ class Abilities::Admin
     can :manage, ClubPage
     can :manage, ClubImage
     can :manage, Poll
+    can :manage, UserImage
 
     can :delete_all_comments, User
     can :delete_all_summaries, User
@@ -48,5 +49,7 @@ class Abilities::Admin
     can :manage, OauthApplication
 
     can :destroy, Ban
+
+    can :restart, Shikimori
   end
 end

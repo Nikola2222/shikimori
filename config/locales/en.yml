@@ -129,6 +129,8 @@ en:
         russia_released_on: Date of release in Russia
         russia_released_on_hint: Date of release in Russia - on hover hint
         more_info: More info
+        origin: Origin
+        origin_manga_id: Origin manga/light novel id
       manga: &manga_attributes
         <<: *anime_attributes
 
@@ -448,6 +450,7 @@ en:
           in_club_black_list: You're banned in this club. Commenting is disabled
           not_a_friend: Commenting is allowed to friends only
           not_a_owner: Commenting is disabled
+          access_denied: Commenting is not allowed
         messages:
           ignored: You can't send messages to this user
         club_invite:
@@ -566,6 +569,24 @@ en:
         disabled_torrents_sync: disable of searching of new episodes on torrents
         disabled_anime365_sync: disable of searching of new episodes on anime365
         score_filter_9_8000: &score_filter_9_8000 removing inflated scores. The first number is the score, and the second number is the number of votes with the score to be removed. For example, score_filter_9_8000 will reduce the number of nines by 8000, score_filter_10_20 will reduce tens by 20.
+      origin:
+        card_game: Card game
+        novel: Novel
+        radio: Radio
+        game: Game
+        unknown: Unknown
+        book: Book
+        light_novel: Light novel
+        web_novel: Web novel
+        original: Original
+        picture_book: Picture book
+        music: Music
+        manga: Manga
+        visual_novel: Visual novel
+        other: Other
+        web_manga: Web manga
+        four_koma_manga: 4-koma manga
+        mixed_media: Mixed media
     manga: &manga_enumerize
       status:
         anons: Planned

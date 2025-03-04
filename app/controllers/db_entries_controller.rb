@@ -137,7 +137,7 @@ class DbEntriesController < ShikimoriController # rubocop:disable ClassLength
   end
 
   def merge_into_other
-    authorize! :merge, resource_klass
+    authorize! :dangerous_action, resource_klass
 
     DbEntries::MergeIntoOther.perform_in(
       DANGEROUS_ACTION_DELAY_INTERVAL,
@@ -154,7 +154,7 @@ class DbEntriesController < ShikimoriController # rubocop:disable ClassLength
   end
 
   def merge_as_episode # rubocop:disable AbcSize
-    authorize! :merge, resource_klass
+    authorize! :dangerous_action, resource_klass
 
     DbEntries::MergeAsEpisode.perform_in(
       DANGEROUS_ACTION_DELAY_INTERVAL,
@@ -170,6 +170,50 @@ class DbEntriesController < ShikimoriController # rubocop:disable ClassLength
     redirect_back(
       fallback_location: @resource.edit_url,
       notice: i18n_t('merge_scheduled')
+    )
+  end
+
+  def clear_related_characters
+    authorize! :dangerous_action, resource_klass
+    NamedLogger.dangerous_action.info 'clear_related_characters  ' \
+      "#{@resource.object.class.name}##{@resource.id} User##{current_user.id}"
+
+    @resource.person_roles.where.not(character_id: nil).destroy_all
+
+    redirect_back(
+      fallback_location: @resource.edit_url,
+      notice: i18n_t('done')
+    )
+  end
+
+  def clear_related_people
+    authorize! :dangerous_action, resource_klass
+    NamedLogger.dangerous_action.info 'clear_related_people ' \
+      "#{@resource.object.class.name}##{@resource.id} User##{current_user.id}"
+
+    @resource.person_roles.where.not(person_id: nil).destroy_all
+
+    redirect_back(
+      fallback_location: @resource.edit_url,
+      notice: i18n_t('done')
+    )
+  end
+
+  def clear_related_titles # rubocop:disable Metrics/AbcSize
+    authorize! :dangerous_action, resource_klass
+    NamedLogger.dangerous_action.info 'clear_related_titles ' \
+      "#{@resource.object.class.name}##{@resource.id} User##{current_user.id}"
+
+    if @resource.anime? || @resource.kinda_manga?
+      @resource.related.destroy_all
+    else
+      @resource.person_roles.where.not(anime_id: nil).destroy_all
+      @resource.person_roles.where.not(manga_id: nil).destroy_all
+    end
+
+    redirect_back(
+      fallback_location: @resource.edit_url,
+      notice: i18n_t('done')
     )
   end
 
