@@ -35,7 +35,7 @@ end
 
 module Shikimori
   DOMAINS = {
-    production: 'shikimori.one',
+    production: ENV['SHIKI_DOMAIN'],
     development: 'shikimori.local',
     test: 'shikimori.test'
   }

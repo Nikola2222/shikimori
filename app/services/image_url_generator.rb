@@ -6,7 +6,9 @@ class ImageUrlGenerator
     Club => :logo
   }
   USE_SUBDOMAINS = {
-    User => false
+    User => false,
+    Poster => false,
+    Club => false
   }
   ONLY_PATH = {
     UserImage => false

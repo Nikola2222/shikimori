@@ -80,7 +80,7 @@ Rails.application.configure do
   config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'fatal')
 
   # Use a different cache store in production.
-  config.cache_store = :mem_cache_store, 'localhost', {
+  config.cache_store = :mem_cache_store, ENV['MEMCACHED_HOST'] ? ENV['MEMCACHED_HOST'] : 'localhost', {
     namespace: 'shiki_7_1',
     compress: true,
     value_max_bytes: 1024 * 1024 * 32
