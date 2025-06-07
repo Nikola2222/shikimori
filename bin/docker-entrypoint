@@ -1,0 +1,23 @@
+#!/bin/bash
+# entrypoint.sh
+
+bundle exec rails db:create
+
+if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
+  # ./bin/rails db:prepare
+
+  if bundle exec rails runner 'ActiveRecord::Base.connection.table_exists?(:schema_migrations)' 2>/dev/null; then
+    echo "Database already initialized, skipping import"
+  else
+    # 3. Загрузить дамп только для новой БД
+    echo "Initializing database from dump..."
+    unzip -d db/ db/dump.sql.zip
+    psql -h db -U shikimori_development -d shikimori_development -f db/dump.sql
+    rm db/dump.sql
+    # RAILS_ENV=test rails db:schema:load
+  fi
+
+  bundle exec rails db:migrate
+fi
+
+exec "$@"
