@@ -25,6 +25,7 @@ x-env: &env
     - TURNSTILE_SITE_KEY=0x4AAAAAAAEjK3AyokpktOUL
     - TURNSTILE_SECRET_KEY=0x4AAAAAAAEjK8iNEcUwnCrHHS9fNTxZ57w
     - MEMCACHED_HOST=memcached
+    - PROXY_URL=socks5://72.195.34.59:4145
 
 services:
   db:
@@ -67,13 +68,14 @@ services:
     # build: .
     image: shikimori-web:latest
     command: bundle exec sidekiq -C config/sidekiq.yml
-    # volumes:
+    volumes:
     #   - ./bin/docker-entrypoint:/shikimori/bin/docker-entrypoint
       # - ./app/:/shikimori/app/
       # - static_data:/shikimori/public/
       # - ./config/:/shikimori/config/
       # - ./app/:/shikimori/app/
       # - ./lib/:/shikimori/lib/
+      - static_data:/shikimori/public
     depends_on:
       - db
       - redis
@@ -119,8 +121,8 @@ services:
       - CAMO_403_REDIRECT=1
       - CAMO_LOGGING_ENABLED=debug
       # - CAMO_ALLOWED_HOSTS=
-    ports:
-      - "5566:5566"
+    expose:
+      - "5566"
 
   # neko-achievements:
   #   build:
@@ -137,9 +139,12 @@ services:
   #   ports:
   #     - "4000:4000"
 
-  # clockwork:
-  #   image: shikimori-web:latest
-  #   command: bundle exec clockwork config/clock.rb
+  clockwork:
+    image: shikimori-web:latest
+    command: bundle exec clockwork config/clock.rb
+    <<: *env
+    depends_on:
+      - sidekiq
 
   web:
     # image: shikimori-web:latest
